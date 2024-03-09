@@ -50,11 +50,11 @@ export default function Login() {
       });
       console.log(res);
       if (res.error) {
-        setError("Invalid Credentials");
+        setError(res.error);
         setPending(false);
       }
       if (res.ok) {
-        router.replace("/");
+        router.push("/");
       }
     } catch (error) {
       setPending(false);

@@ -6,6 +6,7 @@ import User from '../../../../../models/userModel'
 import connectDB from '../../../../../utils/connect'
 import bcrypt from 'bcrypt'
 import NextAuth from 'next-auth/next'
+import { cookies } from 'next/headers'
 
 
 
@@ -16,14 +17,17 @@ const login = async (credentials)=>{
     if (!user){
       throw new Error("No user found")
     }
+
     const isCorrect = await bcrypt.compare(credentials.password , user.password)
     console.log(isCorrect)
     if(!isCorrect){
       throw new Error("Wrong Password")
     }
-    return user
+ cookies().set("token", "123456")
+   
+    return user 
   } catch (error) {
-    console.log("Error", error)
+    console.log("Error ==>", error)
   }
 }
 
@@ -40,6 +44,7 @@ const handler = NextAuth({
             try {
               const user = await login(credentials)
              console.log({credentials})
+            
              return user
             } catch (error) {
              throw new Error("Failed to Login")
